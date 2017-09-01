@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Initiate
 
-spd = 0.8
+spd = random(10) / 10
 time = 0
 </string>
           </argument>
@@ -53,8 +53,8 @@ time = 0
             <kind>1</kind>
             <string>///Take a turn
 if(id = obj_turn.turn){
-    x +=  10
-    y +=  10
+    x +=  random(20) - 10
+    y +=  random(20) - 10
     show_debug_message("Player turn")
     obj_turn.turn = noone
 }

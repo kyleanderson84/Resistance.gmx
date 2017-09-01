@@ -13,8 +13,13 @@
   <paths name="paths"/>
   <objects name="objects">
     <object>objects\obj_turn</object>
-    <object>objects\obj_player</object>
-    <object>objects\obj_hero</object>
+    <object>objects\obj_map</object>
+    <objects name="actors">
+      <object>objects\obj_player</object>
+      <objects name="heros">
+        <object>objects\obj_hero</object>
+      </objects>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\tm_test</room>
