@@ -29,6 +29,17 @@
 
 spd = 0.9
 time = 0
+
+ctrl_direction[0, 0] = vk_numpad7
+ctrl_direction[0, 1] = vk_numpad4
+ctrl_direction[0, 2] = vk_numpad1
+ctrl_direction[1, 0] = vk_numpad8
+ctrl_direction[1, 1] = vk_numpad5
+ctrl_direction[1, 2] = vk_numpad2
+ctrl_direction[2, 0] = vk_numpad9
+ctrl_direction[2, 1] = vk_numpad6
+ctrl_direction[2, 2] = vk_numpad3
+
 </string>
           </argument>
         </arguments>
@@ -53,12 +64,19 @@ time = 0
             <kind>1</kind>
             <string>///Take a turn
 if(id = obj_turn.turn){
-    if(keyboard_check(vk_left)){
-        x -= 10
-        obj_turn.turn = noone
+    var chg_x = 0
+    var chg_y = 0
+    for(var temp_y = 0; temp_y &lt; 3; temp_y++){
+        for(var temp_x = 0; temp_x &lt; 3; temp_x++){
+            if(keyboard_check_pressed(ctrl_direction[temp_x, temp_y])){
+                chg_x = temp_x - 1
+                chg_y = temp_y - 1
+            }
+        }
     }
-    if(keyboard_check(vk_right)){
-        x += 10
+    if(chg_x != 0 or chg_y != 0){
+        x += chg_x * sprite_width
+        y += chg_y * sprite_height
         obj_turn.turn = noone
     }
     
