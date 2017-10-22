@@ -31,13 +31,13 @@ spd = 0.9
 time = 0
 
 ctrl_direction[0, 0] = vk_numpad7
-ctrl_direction[0, 1] = vk_numpad4
-ctrl_direction[0, 2] = vk_numpad1
 ctrl_direction[1, 0] = vk_numpad8
-ctrl_direction[1, 1] = vk_numpad5
-ctrl_direction[1, 2] = vk_numpad2
 ctrl_direction[2, 0] = vk_numpad9
+ctrl_direction[0, 1] = vk_numpad4
+ctrl_direction[1, 1] = vk_numpad5
 ctrl_direction[2, 1] = vk_numpad6
+ctrl_direction[0, 2] = vk_numpad1
+ctrl_direction[1, 2] = vk_numpad2
 ctrl_direction[2, 2] = vk_numpad3
 
 </string>
@@ -74,7 +74,8 @@ if(id = obj_turn.turn){
             }
         }
     }
-    if(chg_x != 0 or chg_y != 0){
+    if((chg_x != 0 or chg_y != 0) and 
+        !place_meeting(x + (chg_x * sprite_width), y + (chg_y * sprite_height), obj_blocked)){
         x += chg_x * sprite_width
         y += chg_y * sprite_height
         obj_turn.turn = noone

@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>&lt;undefined&gt;</parentName>
+  <parentName>obj_blocked</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -29,6 +29,7 @@
 
 spd = random(10) / 10
 time = 0
+ds_queue_enqueue(obj_turn.actors, id)
 </string>
           </argument>
         </arguments>
@@ -53,9 +54,13 @@ time = 0
             <kind>1</kind>
             <string>///Take a turn
 if(id = obj_turn.turn){
-    x +=  random(20) - 10
-    y +=  random(20) - 10
-    show_debug_message("Player turn")
+    do{
+        var chg_x = irandom(2) - 1
+        var chg_y = irandom(2) - 1;
+    }until(!place_meeting(x + (chg_x * sprite_width), y + (chg_y * sprite_height), obj_blocked))
+    x += chg_x * sprite_width
+    y += chg_y * sprite_height
+    
     obj_turn.turn = noone
 }
 </string>

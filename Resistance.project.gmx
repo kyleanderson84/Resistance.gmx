@@ -7,6 +7,7 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprite>sprites\spr_player</sprite>
+    <sprite>sprites\spr_blocked</sprite>
     <sprite>sprites\spr_hero</sprite>
   </sprites>
   <backgrounds name="background"/>
@@ -20,6 +21,7 @@
         <object>objects\obj_hero</object>
       </objects>
     </objects>
+    <object>objects\obj_blocked</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\tm_test</room>
