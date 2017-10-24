@@ -27,6 +27,9 @@
             <kind>1</kind>
             <string>///Initiate
 
+hp = 25
+hp_max = hp
+
 spd = 0.9
 time = 0
 
@@ -74,11 +77,16 @@ if(id = obj_turn.turn){
             }
         }
     }
-    if((chg_x != 0 or chg_y != 0) and 
-        !place_meeting(x + (chg_x * sprite_width), y + (chg_y * sprite_height), obj_blocked)){
-        x += chg_x * sprite_width
-        y += chg_y * sprite_height
-        obj_turn.turn = noone
+    if(chg_x != 0 or chg_y != 0){
+        if( !place_meeting(x + (chg_x * sprite_width), y + (chg_y * sprite_height), obj_blocked)){
+            x += chg_x * sprite_width
+            y += chg_y * sprite_height
+            obj_turn.turn = noone
+        } else if( place_meeting(x + (chg_x * sprite_width), y + (chg_y * sprite_height), obj_player)){
+            temp_opponent = instance_position(x + (chg_x * sprite_width), y + (chg_y * sprite_height), obj_player)
+            temp_opponent.hp--
+            obj_turn.turn = noone
+        }
     }
     
 }

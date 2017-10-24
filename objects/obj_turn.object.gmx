@@ -59,6 +59,10 @@ ds_queue_enqueue(actors, obj_hero.id)
 
 while(turn = noone){
     temp_actor = ds_queue_dequeue(actors)
+    
+    if(!instance_exists(temp_actor))
+        continue
+        
     temp_actor.time += temp_actor.spd
     if( temp_actor.time &gt; 1){
         turn = temp_actor
