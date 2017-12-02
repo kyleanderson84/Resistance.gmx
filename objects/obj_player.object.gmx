@@ -31,6 +31,39 @@ hp_max = hp
 spd = random(10) / 10
 time = 0
 ds_queue_enqueue(obj_turn.actors, id)
+Coord_List = ds_queue_create()
+debug = false
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Die if health 0 or less
+if( hp &lt;= 0){
+    if(id = obj_turn.turn){
+        obj_turn.turn = noone
+    }
+    instance_destroy()
+    
+}
 </string>
           </argument>
         </arguments>
@@ -53,41 +86,21 @@ ds_queue_enqueue(obj_turn.actors, id)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Die if health 0 or less
-if( hp &lt;= 0){
-
-    instance_destroy()
-    
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>///Take a turn
 if(id = obj_turn.turn){
-    do{
-        var chg_x = irandom(2) - 1
-        var chg_y = irandom(2) - 1;
-    }until(!place_meeting(x + (chg_x * sprite_width), y + (chg_y * sprite_height), obj_blocked))
-    x += chg_x * sprite_width
-    y += chg_y * sprite_height
-    
+    if(collision_circle(x, y, 100, obj_player, false, true)){
+        scr_find_grid_path(id, obj_hero.x, obj_hero.y, true, sprite_width)
+        if(ds_queue_size(Coord_List) &gt; 0){
+            temp_y = ds_queue_dequeue(Coord_List) * sprite_width
+            temp_x = ds_queue_dequeue(Coord_List) * sprite_height
+            if(place_meeting(temp_x, temp_y, obj_blocked)){
+                scr_find_grid_path(id, obj_hero.x, obj_hero.y, true, sprite_width)
+            } else {
+                x = temp_x
+                y = temp_y
+            }
+        }
+    }
     obj_turn.turn = noone
 }
 </string>
@@ -117,8 +130,8 @@ draw_self()
 
 draw_set_color(c_red)
 
-var temp_x = x - 1 - sprite_width / 2
-var temp_y = y - sprite_height / 2
+var temp_x = x - 1
+var temp_y = y 
 var hp_length = sprite_width * ( hp / hp_max )
 
 draw_line_width(temp_x, temp_y, temp_x + hp_length, temp_y, 3)
