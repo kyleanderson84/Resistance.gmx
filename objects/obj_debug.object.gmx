@@ -27,8 +27,8 @@
             <kind>1</kind>
             <string>///Debug proximity grid script
 
-test = scr_proximety_grid(obj_hero.x, obj_hero.y, obj_hero.sprite_width)
-show_debug_message(test)
+test = scr_step_grid(14, 14, obj_hero.sprite_width)
+
 </string>
           </argument>
         </arguments>
@@ -53,7 +53,7 @@ show_debug_message(test)
             <kind>1</kind>
             <string>for(yy = 0; yy &lt; ds_grid_height(test); yy++){
     for(xx = 0; xx &lt; ds_grid_width(test); xx++){
-        draw_text(xx * obj_hero.sprite_width, yy * obj_hero.sprite_width, string(round(ds_grid_get(test, xx, yy))))
+        draw_text(xx * obj_hero.sprite_width, yy * obj_hero.sprite_width, string_format(ds_grid_get(test, xx, yy), 4, 0))
     }
 }
 </string>
