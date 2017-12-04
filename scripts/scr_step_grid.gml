@@ -19,7 +19,7 @@ ds_priority_add(step_stack, y_origin * r_width + x_origin, point_distance(x_orig
 
 
 while(ds_priority_size(step_stack)){
-    var temp_location = ds_priority_delete_min(step_stack)
+    var temp_location = ds_priority_find_min(step_stack)
     var temp_x = temp_location mod r_width
     var temp_y = temp_location div r_width
     if( ds_grid_get(step_grid, temp_x, temp_y) == -2){
@@ -27,17 +27,33 @@ while(ds_priority_size(step_stack)){
     } else {
         var count = ds_grid_get(step_grid, temp_x, temp_y) + 1
     }
+    temp_priority = ds_priority_create()
     
     for(var yy = -1; yy < 2; yy++){
         for(var xx = -1; xx < 2; xx++){
-            if(ds_grid_get(step_grid, xx + temp_x, yy + temp_y) == 0 and place_meeting((xx + temp_x) * tile_size, (yy + temp_y) * tile_size, obj_blocked)){
+            if(place_meeting((xx + temp_x) * tile_size, (yy + temp_y) * tile_size, obj_blocked)){
                 ds_grid_set(step_grid, xx + temp_x, yy + temp_y, -1)
             } else if(ds_grid_get(step_grid, xx + temp_x, yy + temp_y) == 0){
-                ds_grid_set(step_grid, xx + temp_x, yy + temp_y, count)
-                ds_priority_add(step_stack, (temp_y + yy) * r_width + xx + temp_x, point_distance(xx + temp_x, yy + temp_y, x_hero, y_hero))
+                
+                ds_priority_add(temp_priority, (temp_y + yy) * r_width + xx + temp_x, point_distance(xx + temp_x, yy + temp_y, x_hero, y_hero))
             }
         }
     }
+    if(ds_priority_size(temp_priority) == 0){
+        ds_priority_delete_min(step_stack)
+    } else if(ds_priority_size(temp_priority) == 1){
+        ds_priority_delete_min(step_stack)
+        var temp_l = ds_priority_find_min(temp_priority)
+        var temp_p = ds_priority_find_priority(temp_priority, temp_l)
+        ds_priority_add(step_stack, temp_l, temp_p)
+        ds_grid_set(step_grid, temp_l mod r_width, temp_l div r_width, count)
+    } else {
+        var temp_l = ds_priority_find_min(temp_priority)
+        var temp_p = ds_priority_find_priority(temp_priority, temp_l)
+        ds_priority_add(step_stack, temp_l, temp_p)
+        ds_grid_set(step_grid, temp_l mod r_width, temp_l div r_width, count)
+    }
+    ds_priority_destroy(temp_priority)
 }
 
 return step_grid
