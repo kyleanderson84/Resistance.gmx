@@ -18,6 +18,7 @@
     <script>scripts\scr_find_grid_path.gml</script>
     <script>scripts\scr_proximety_grid.gml</script>
     <script>scripts\scr_step_grid.gml</script>
+    <script>scripts\scr_find_path_stack.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_turn</object>
