@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>obj_blocked</parentName>
+  <parentName>self</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -88,21 +88,39 @@ if( hp &lt;= 0){
             <kind>1</kind>
             <string>///Take a turn
 if(id = obj_turn.turn){
-    if(collision_circle(x, y, 100, obj_player, false, true)){
-        scr_find_grid_path(id, obj_hero.x, obj_hero.y, true, sprite_width)
-        if(ds_queue_size(Coord_List) &gt; 0){
-            temp_y = ds_queue_dequeue(Coord_List) * sprite_width
-            temp_x = ds_queue_dequeue(Coord_List) * sprite_height
-            if(place_meeting(temp_x, temp_y, obj_blocked)){
-                scr_find_grid_path(id, obj_hero.x, obj_hero.y, true, sprite_width)
-            } else {
-                x = temp_x
-                y = temp_y
-            }
-        }
+/*
+    if(collision_circle(x, y, 300, obj_hero, false, true) and not collision_circle(x, y, sprite_width, obj_hero, false, true)){
+        path = scr_find_path_stack(x, y, obj_hero.x, obj_hero.y, sprite_width);
+        var coord = ds_stack_pop(path);
+        var width = room_width div sprite_width;
+        ds_stack_destroy(path);
+        x = (coord mod width) * sprite_width;
+        y = (coord div width) * sprite_width;
     }
-    obj_turn.turn = noone
-}
+*/
+    var temp_x = x div sprite_width;
+    var temp_y = y div sprite_width;
+    var temp_hero_x = obj_hero.x div sprite_width;
+    var temp_hero_y = obj_hero.y div sprite_width;
+    var room_w = room_width div sprite_width
+    if(collision_circle(x, y, 300, obj_hero, false, true)){
+        var priority = ds_priority_create();
+        for(var yy = -1; yy &lt; 2; yy++){
+            for(var xx = -1; xx &lt; 2; xx++){
+                if(!place_meeting((xx + temp_x) * sprite_width, (yy + temp_y) * sprite_width, obj_blocked)){
+                    ds_priority_add(priority, xx + temp_x + (yy + temp_y) * room_w, point_distance(xx + temp_x, yy + temp_y, temp_hero_x, temp_hero_y));
+                }
+            }
+        };
+        if(not ds_priority_empty(priority)){
+            var temp_coord = ds_priority_find_min(priority);
+            x = (temp_coord mod room_w) * sprite_width;
+            y = (temp_coord div room_w) * sprite_width;
+        };
+        ds_priority_destroy(priority);
+    };
+    obj_turn.turn = noone;
+};
 </string>
           </argument>
         </arguments>

@@ -5,12 +5,14 @@
   </Configs>
   <NewExtensions>
     <extension index="0">extensions\Grid path</extension>
+    <extension index="1">extensions\FOG 2D</extension>
   </NewExtensions>
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprite>sprites\spr_player</sprite>
     <sprite>sprites\spr_blocked</sprite>
     <sprite>sprites\spr_hero</sprite>
+    <sprite>sprites\spr_fog</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -31,6 +33,8 @@
     </objects>
     <object>objects\obj_blocked</object>
     <object>objects\obj_debug</object>
+    <object>objects\obj_fog_of_war</object>
+    <object>objects\fog</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\tm_test</room>
